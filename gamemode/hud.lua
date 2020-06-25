@@ -32,6 +32,13 @@ function HUD()
     if (client:GetAmmoCount(client:GetActiveWeapon():GetSecondaryAmmoType()) > 0) then
         draw.SimpleText("Secondary: " .. client:GetAmmoCount(client:GetActiveWeapon():GetSecondaryAmmoType()), "DermaDefaultBold", 260, ScrH() - 25, Color(255, 255, 255, 255), 0, 0)
     end
+
+    draw.RoundedBox(0, 0, ScrH() - 145, 250, 40, Color(30, 30, 30, 230))
+    draw.SimpleText("Level: " .. "CURLEVEL", "DermaDefaultBold", 10, ScrH() - 140, Color(255, 255, 255, 255), 0, 0)
+    draw.SimpleText("EXP: " .. "CUREXP" .. "/" .. "EXPTOLEVEL", "DermaDefaultBold", 10, ScrH() - 125, Color(255, 255, 255, 255), 0, 0)
+
+    draw.RoundedBox(0, 255, ScrH() - 100, 125, 25, Color(30, 30, 30, 230))
+    draw.SimpleText("$ " .. "TOTALMONEY", "DermaDefaultBold", 260, ScrH() - 95, Color(255, 255, 255, 255), 0, 0)
 end
 hook.Add("HUDPaint", "TestHUD", HUD)
 
