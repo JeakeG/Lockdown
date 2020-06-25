@@ -17,8 +17,7 @@ end
 function GM:OnNPCKilled(npc, attacker, inflictor)
     --Add money
     --Add exp and check for level up
-
-inflictor:SetArmor(inflictor:Armor() + 1) 
+    attacker:SetNWInt("playerMoney", attacker:GetNWInt("playerMoney") + 100)
 end
 
 function GM:PlayerDeath(victim, inflictor, attacker)

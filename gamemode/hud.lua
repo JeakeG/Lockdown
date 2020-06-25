@@ -38,7 +38,7 @@ function HUD()
     draw.SimpleText("EXP: " .. "CUREXP" .. "/" .. "EXPTOLEVEL", "DermaDefaultBold", 10, ScrH() - 125, Color(255, 255, 255, 255), 0, 0)
 
     draw.RoundedBox(0, 255, ScrH() - 100, 125, 25, Color(30, 30, 30, 230))
-    draw.SimpleText("$ " .. "TOTALMONEY", "DermaDefaultBold", 260, ScrH() - 95, Color(255, 255, 255, 255), 0, 0)
+    draw.SimpleText("$ " .. client:GetNWInt("playerMoney"), "DermaDefaultBold", 260, ScrH() - 95, Color(255, 255, 255, 255), 0, 0)
 end
 hook.Add("HUDPaint", "TestHUD", HUD)
 
