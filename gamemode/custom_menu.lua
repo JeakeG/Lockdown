@@ -66,6 +66,25 @@ function addButtons(Menu)
     end
     shopButton.DoClick = function(shopButton)
         local shopPanel = Menu:Add("Shop Panel")
+        local iconList = vgui.Create("DIconLayout", shopPanel)
+
+        iconList:SetPos(0,0)
+        iconList:SetSize(shopPanel:GetWide(), shopPanel:GetTall())
+        iconList:SetSpaceY(5)
+        iconList:SetSpaceX(5)
+        
+        local entsArr = {}
+        entsArr[1] = scripted_ents.Get("ammo_dispenser")
+
+        for k, v in pairs(entsArr) do
+            local icon = vgui.Create("SpawnIcon", iconList)
+            icon:SetModel(v["Model"])
+            icon:SetToolTip(v["PrintName"] .. "\nCost: " .. "$" .. v["Cost"])
+            iconList:Add(icon)
+            icon.DoClick = function(icon)
+                LocalPlayer():ConCommand("buy_entity " .. v["ClassName"])
+            end
+        end
     end
 end
 

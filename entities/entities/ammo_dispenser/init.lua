@@ -4,7 +4,7 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 function ENT:Initialize()
-    self:SetModel("models/props_lab/reciever_cart.mdl")
+    self:SetModel(self.Model)
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
@@ -66,5 +66,12 @@ function ENT:OnRemove()
     local ClassName = self:GetClass()
     local entCount = Owner:GetNWInt(ClassName .. "count")
 
-    Owner:SetNWInt(ClassName .. "count", entCount - 1)
+    print("got here")
+    if (Owner:IsValid()) then
+        print("owner valid")
+        if (Owner:GetNWInt(ClassName .. "count") > 0) then
+            print("deducting from count")
+            Owner:SetNWInt(ClassName .. "count", entCount - 1)
+        end
+    end
 end

@@ -4,6 +4,7 @@ AddCSLuaFile("hud.lua")
 AddCSLuaFile("custom_menu.lua")
 
 include("shared.lua")
+include("concommands.lua")
 
 local open = false
 
@@ -14,6 +15,7 @@ function GM:PlayerSpawn(player)
     player:SetRunSpeed(1500)
     player:SetWalkSpeed(150)
     player:Give("weapon_physgun")
+    player:Give("weapon_physcannon")
     player:SetupHands()
 end
 
@@ -21,19 +23,19 @@ function GM:PlayerInitialSpawn(player)
     if (player:GetPData("playerLvl") == nil) then
         player:SetNWInt("playerLvl", 1)
     else
-        player:SetNWInt("playerLvl", player:GetPData("playerLvl"))
+        player:SetNWInt("playerLvl", tonumber(player:GetPData("playerLvl")))
     end
 
     if (player:GetPData("playerExp") == nil) then
         player:SetNWInt("playerExp", 0)
     else
-        player:SetNWInt("playerExp", player:GetPData("playerExp"))
+        player:SetNWInt("playerExp", tonumber(player:GetPData("playerExp")))
     end
 
     if (player:GetPData("playerMoney") == nil) then
         player:SetNWInt("playerMoney", 0)
     else
-        player:SetNWInt("playerMoney", player:GetPData("playerMoney"))
+        player:SetNWInt("playerMoney", tonumber(player:GetPData("playerMoney")))
     end
 end
 
