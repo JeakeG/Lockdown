@@ -1,6 +1,7 @@
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("hud.lua")
+AddCSLuaFile("custom_menu.lua")
 
 include("shared.lua")
 
@@ -15,8 +16,22 @@ function GM:PlayerSpawn(player)
 end
 
 function GM:PlayerInitialSpawn(player)
-    if (player:GetNWInt("playerLvl") <= 0) then
+    if (player:GetPData("playerLvl") == nil) then
         player:SetNWInt("playerLvl", 1)
+    else
+        player:SetNWInt("playerLvl", player:GetPData("playerLvl"))
+    end
+
+    if (player:GetPData("playerExp") == nil) then
+        player:SetNWInt("playerExp", 0)
+    else
+        player:SetNWInt("playerExp", player:GetPData("playerExp"))
+    end
+
+    if (player:GetPData("playerMoney") == nil) then
+        player:SetNWInt("playerMoney", 0)
+    else
+        player:SetNWInt("playerMoney", player:GetPData("playerMoney"))
     end
 end
 
@@ -52,3 +67,16 @@ function GM:ShowSpare2(player)
     net.Broadcast()
 end
 
+function GM:PlayerDisconnected(player)
+    player:SetPData("playerLvl", player:GetNWInt("playerLvl"))
+    player:SetPData("playerExp", player:GetNWInt("playerExp"))
+    player:SetPData("playerMoney", player:GetNWInt("playerMoney"))
+end
+
+function GM:ShutDown()
+    for k, v in pairs(player.GetAll()) do
+        v:SetPData("playerLvl", v:GetNWInt("playerLvl"))
+        v:SetPData("playerExp", v:GetNWInt("playerExp"))
+        v:SetPData("playerMoney", v:GetNWInt("playerMoney"))
+    end
+end
