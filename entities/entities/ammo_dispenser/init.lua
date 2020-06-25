@@ -9,6 +9,8 @@ function ENT:Initialize()
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
 
+    self:SetUseType(SIMPLE_USE)
+
     local phys = self:GetPhysicsObject()
 
     if (IsValid(phys)) then
@@ -30,7 +32,9 @@ function ENT:SpawnFunction(player, tr, ClassName)
 end
 
 function ENT:Use(activator, caller)
-    --Whenever a player uses the entity
+    local ammoType = activator:GetActiveWeapon():GetPrimaryAmmoType()
+
+    activator:GiveAmmo(5, ammoType, false)
 end
 
 function ENT:Think()
