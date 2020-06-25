@@ -18,6 +18,8 @@ if (Menu == nil) then
         end
     end
 
+    addButtons(Menu)
+
     if (net.ReadBit() == 0) then 
         Menu:Hide()
         gui.EnableScreenClicker(false)
@@ -26,3 +28,77 @@ if (Menu == nil) then
         gui.EnableScreenClicker(true)
     end
 end)
+
+function addButtons(Menu) 
+    local playerButton = vgui.Create("DButton")
+    playerButton:SetParent(Menu)
+    playerButton:SetText("")
+    playerButton:SetSize(100, 50)
+    playerButton:SetPos(0, 25)
+    playerButton.Paint = function()
+        surface.SetDrawColor(50, 50, 50, 255)
+        surface.DrawRect(0, 0, playerButton:GetWide(), playerButton:GetTall())
+
+        surface.SetDrawColor(40, 40, 40, 255)
+        surface.DrawRect(0, 49, playerButton:GetWide(), 1)
+        surface.DrawRect(99, 0, 1, playerButton:GetTall())
+
+        draw.DrawText("Player", "DermaDefaultBold", playerButton:GetWide() / 2, 17, Color(255, 255, 255, 255), 1)
+    end
+    playerButton.DoClick = function(playerButton)
+        local playerPanel = Menu:Add("Player Panel")
+    end
+
+    local shopButton = vgui.Create("DButton")
+    shopButton:SetParent(Menu)
+    shopButton:SetText("")
+    shopButton:SetSize(100, 50)
+    shopButton:SetPos(0, 75)
+    shopButton.Paint = function()
+        surface.SetDrawColor(50, 50, 50, 255)
+        surface.DrawRect(0, 0, shopButton:GetWide(), shopButton:GetTall())
+
+        surface.SetDrawColor(40, 40, 40, 255)
+        surface.DrawRect(0, 49, shopButton:GetWide(), 1)
+        surface.DrawRect(99, 0, 1, shopButton:GetTall())
+
+        draw.DrawText("Shop", "DermaDefaultBold", shopButton:GetWide() / 2, 17, Color(255, 255, 255, 255), 1)
+    end
+    shopButton.DoClick = function(shopButton)
+        local shopPanel = Menu:Add("Shop Panel")
+    end
+end
+
+--Player Panel
+
+PANEL = {}
+
+function PANEL:Init()
+    self:SetSize(650, 475)
+    self:SetPos(100, 25)
+end
+
+function PANEL:Paint(width, height)
+    draw.RoundedBox(0, 0, 0, width, height, Color(0, 0, 0, 255))
+end
+
+vgui.Register("Player Panel", PANEL, "Panel")
+
+--End Player Panel
+
+--Shop Panel
+
+PANEL = {}
+
+function PANEL:Init()
+    self:SetSize(650, 475)
+    self:SetPos(100, 25)
+end
+
+function PANEL:Paint(width, height)
+    draw.RoundedBox(0, 0, 0, width, height, Color(255, 255, 255, 255))
+end
+
+vgui.Register("Shop Panel", PANEL, "Panel")
+
+--End Shop Panel
