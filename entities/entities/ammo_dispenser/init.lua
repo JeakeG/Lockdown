@@ -16,6 +16,8 @@ function ENT:Initialize()
     if (IsValid(phys)) then
         phys:Wake()
     end
+
+    self:SetHealth(self.BaseHealth)
 end
 
 function ENT:SpawnFunction(player, tr, ClassName)
@@ -39,4 +41,12 @@ end
 
 function ENT:Think()
     --Called every tick
+end
+
+function ENT:OnTakeDamage(damage)
+    self:SetHealth(self:Health() - damage:GetDamage())
+
+    if (self:Health() <= 0) then
+        self:Remove()
+    end
 end
