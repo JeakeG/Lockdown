@@ -23,14 +23,24 @@ end
 function ENT:SpawnFunction(player, tr, ClassName)
     if (!tr.Hit) then return end
 
-    local spawnPos = player:GetShootPos() + player:GetForward() * 80
+    local entCount = player:GetNWInt(ClassName .. "count")
 
-    local ent = ents.Create(ClassName)
-    ent:SetPos(spawnPos)
-    ent:Spawn()
-    ent:Activate()
+    if (entCount < self.Limit) then
+        local spawnPos = player:GetShootPos() + player:GetForward() * 80
 
-    return ent
+        self.Owner = player
+
+        local ent = ents.Create(ClassName)
+        ent:SetPos(spawnPos)
+        ent:Spawn()
+        ent:Activate()
+
+        player:SetNWInt(ClassName .. "count", entCount + 1)
+
+        return ent
+    end
+
+    return
 end
 
 function ENT:Use(activator, caller)
@@ -49,4 +59,12 @@ function ENT:OnTakeDamage(damage)
     if (self:Health() <= 0) then
         self:Remove()
     end
+end
+
+function ENT:OnRemove()
+    local Owner = self.Owner
+    local ClassName = self:GetClass()
+    local entCount = Owner:GetNWInt(ClassName .. "count")
+
+    Owner:SetNWInt(ClassName .. "count", entCount - 1)
 end
