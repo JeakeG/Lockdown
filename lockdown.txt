@@ -1,0 +1,8 @@
+"lockdown"
+{
+	"base"			"base"
+	"title"			"Lockdown"
+	"maps"			"^ld_"
+	"menusystem"	"1"
+	"workshopid"	""
+}
