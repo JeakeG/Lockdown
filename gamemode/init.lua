@@ -5,6 +5,8 @@ AddCSLuaFile("custom_menu.lua")
 
 include("shared.lua")
 
+local open = false
+
 function GM:PlayerSpawn(player)
     player:SetGravity(0.5)
     player:SetMaxHealth(100)
@@ -63,7 +65,13 @@ end
 
 util.AddNetworkString("FMenu")
 function GM:ShowSpare2(player)
+    if (open == false) then
+        open = true
+    else
+        open = false
+    end
     net.Start("FMenu")
+        net.WriteBit(open)
     net.Broadcast()
 end
 

@@ -1,9 +1,28 @@
+local Menu
+
 net.Receive("FMenu", function()
-    local frame = vgui.Create("DFrame")
-    frame:SetSize(500, 500)
-    frame:SetPos(ScrW() / 2 - 250, ScrH() / 2 - 250)
-    frame:SetTitle("Lockdown Menu")
-    frame:SetDraggable(false)
-    frame:ShowCloseButton(true)
-    frame:MakePopup()
+if (Menu == nil) then
+        Menu = vgui.Create("DFrame")
+        Menu:SetSize(750, 500)
+        Menu:Center()
+        Menu:SetTitle("Lockdown Menu")
+        Menu:SetDraggable(false)
+        Menu:ShowCloseButton(false)
+        Menu:SetDeleteOnClose(false)
+        Menu.Paint = function()
+            surface.SetDrawColor(60, 60, 60, 255)
+            surface.DrawRect(0, 0, Menu:GetWide(), Menu:GetTall())
+
+            surface.SetDrawColor(40, 40, 40, 255)
+            surface.DrawRect(0, 24, Menu:GetWide(), 1)
+        end
+    end
+
+    if (net.ReadBit() == 0) then 
+        Menu:Hide()
+        gui.EnableScreenClicker(false)
+    else
+        Menu:Show()
+        gui.EnableScreenClicker(true)
+    end
 end)
