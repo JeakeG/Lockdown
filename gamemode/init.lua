@@ -14,14 +14,41 @@ function GM:PlayerSpawn(player)
     player:SetupHands()
 end
 
+function GM:PlayerInitialSpawn(player)
+    if (player:GetNWInt("playerLvl") <= 0) then
+        player:SetNWInt("playerLvl", 1)
+    end
+end
+
 function GM:OnNPCKilled(npc, attacker, inflictor)
-    --Add money
-    --Add exp and check for level up
     attacker:SetNWInt("playerMoney", attacker:GetNWInt("playerMoney") + 100)
+
+    attacker:SetNWInt("playerExp", attacker:GetNWInt("playerExp") + 75)
+    checkForLevel(attacker)
 end
 
 function GM:PlayerDeath(victim, inflictor, attacker)
-    --Add money
-    --Add exp and check for level up
+    attacker:SetNWInt("playerMoney", attacker:GetNWInt("playerMoney") + 100)
+
+    attacker:SetNWInt("playerExp", attacker:GetNWInt("playerExp") + 75)
+    checkForLevel(attacker)
+end
+
+function checkForLevel(player)
+    local expToLevel = (player:GetNWInt("playerLvl") * 100) * 2
+    local curExp = player:GetNWInt("playerExp")
+    local curLvl = player:GetNWInt("playerLvl")
+
+    if(curExp >= expToLevel) then
+        curExp = curExp - expToLevel
+        player:SetNWInt("playerExp", curExp)
+        player:SetNWInt("playerLvl", curLvl + 1)
+    end
+end
+
+util.AddNetworkString("FMenu")
+function GM:ShowSpare2(player)
+    net.Start("FMenu")
+    net.Broadcast()
 end
 
