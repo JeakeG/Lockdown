@@ -1,6 +1,6 @@
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_init.lua")
-AddCSLuaFile("testhud.lua")
+AddCSLuaFile("hud.lua")
 
 include("shared.lua")
 
@@ -15,5 +15,14 @@ function GM:PlayerSpawn(player)
 end
 
 function GM:OnNPCKilled(npc, attacker, inflictor)
-    
+    --Add money
+    --Add exp and check for level up
+
+inflictor:SetArmor(inflictor:Armor() + 1) 
 end
+
+function GM:PlayerDeath(victim, inflictor, attacker)
+    --Add money
+    --Add exp and check for level up
+end
+
