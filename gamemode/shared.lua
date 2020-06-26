@@ -5,6 +5,4 @@ GM.Website = "N/A"
 
 DeriveGamemode("sandbox")
 
-function GM:Initialize()
-    --Do Stuff Here
-end
+LOCKDOWN = {}

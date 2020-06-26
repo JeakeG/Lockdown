@@ -1,65 +1,70 @@
-function buyEntity(player, cmd, args)
-    if (args[1] != nil) then
-        local ent = ents.Create(args[1])
-        local tr = player:GetEyeTrace()
+function handleLimitChange(ent, itemName, player)
+    player:SetVar("amount_" .. itemName, player:GetVar("amount_" .. itemName, 0) + 1)
 
-        if (IsValid(ent)) then
-            local ClassName = ent:GetClass()
+    ent:CallOnRemove("DecrementLimit", function()
+        player:SetVar("amount_" .. itemName, player:GetVar("amount_" .. itemName) - 1)
+    end)
+end
+local function buyItem(player, _, args)
+    local categoryName = args[1]
+    local itemName = args[2]
 
-            if (!tr.Hit) then return end
+    local itemTable = LOCKDOWN.ShopItems[categoryName][itemName]
 
-            local entCount = player:GetNWInt(ClassName .. "count")
+    local isGun = itemTable.IsGun or false
+    local price = itemTable.Price
+    local levelReq = itemTable.LevelReq
+    local limit = itemTable.Limit
+    local model = itemTable.Model
+    local className = itemTable.ClassName
 
-            if(!ent.Limit or entCount < ent.Limit) then
-                if (player:CanAfford(ent.Cost)) then
-                    local spawnPos = player:GetShootPos() + player:GetForward() * 80
+    if !player:CanAfford(price) then
+        player:ChatPrint("You cannot afford this item!")
+        return 
+    end
 
-                    ent.Owner = player
+    if player:GetLevel() < levelReq then
+        player:ChatPrint("You are not high enough level to purchase this item!")
+        return
+    end
 
-                    ent:SetPos(spawnPos)
-                    ent:Spawn()
-                    ent:Activate()
-
-                    player:SetNWInt(ClassName .. "count", entCount + 1)
-                    player:RemoveFromBalance(ent.Cost)
-
-                    return ent
-                else
-                    player:PrintMessage(HUD_PRINTTALK, "You do not have enough money to purchase this.")
-                end
-            else
-                player:PrintMessage(HUD_PRINTTALK, "Maximum amount of this entity has been reached. MAX = " .. ent.Limit)
+    if isGun then
+        player:Give(className)
+        player:GiveAmmo(25, player:GetWeapon(classname):GetPrimaryAmmoType(), false)
+    else
+        if limit then
+            local playerCurentSpawnAmount = player:GetVar("amount_" .. itemName, 0)
+            
+            if playerCurentSpawnAmount >= limit then
+                player:ChatPrint("The spawn limit for this item has been reached!")
             end
-            return
+        end
+
+        local tr = {}
+        tr.start = player:EyePos()
+        tr.endpos = tr.start + player:GetAimVector() * 85
+        tr.filter = player
+
+        tr = util.TraceLine(tr)
+
+        local SpawnPos = tr.HitPos + Vector(0, 0, 40)
+        local SpawnAng = player:EyeAngles()
+        SpawnAng.pitch = 0
+        SpawnAng.yaw = SpawnAng.yaw + 180
+
+        local ent = ents.Create(className)
+        ent.Owner = player
+        ent:SetModel(model)
+        ent:SetPos(SpawnPos)
+        ent:SetAngles(SpawnAng)
+        ent:Spawn()
+        ent:Activate()
+
+        if limit then
+            handleLimitChange(ent, itemName, player)
         end
     end
+
+    player:RemoveFromBalance(price)
 end
-concommand.Add("buy_entity", buyEntity)
-
-function buyGun(player, cmd, args)
-    local weaponPrices = {}
-    weaponPrices[1] = {"weapon_smg1", 100, 5}
-
-    for k, v in pairs(weaponPrices) do
-        if (args[1] == v[1]) then
-            local playerLvl = player:GetLevel()
-            local gunCost = v[2]
-            local levelReq = v[3]
-
-            if (playerLvl >= levelReq) then
-                if (player:CanAfford(gunCost)) then
-                    player:RemoveFromBalance(gunCost)
-                    player:SetNWString("playerWeapon", args[1])
-                    player:Give(args[1])
-                    player:GiveAmmo(20, player:GetWeapon(args[1]):GetPrimaryAmmoType(), false)
-                else
-                    player:PrintMessage(HUD_PRINTTALK, "You do not have enough money to purchase this.")
-                end
-            else
-                player:PrintMessage(HUD_PRINTTALK, "Level " .. levelReq .. " is required to purchase this.")
-            end
-            return
-        end
-    end
-end
-concommand.Add("buy_gun", buyGun)
+concommand.Add("buy_item", buyItem)

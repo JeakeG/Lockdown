@@ -4,18 +4,13 @@ AddCSLuaFile("hud.lua")
 AddCSLuaFile("custom_menu.lua")
 AddCSLuaFile("custom_scoreboard.lua")
 AddCSLuaFile("player/sh_player.lua")
+AddCSLuaFile("shop/sh_shop.lua")
 
 include("shared.lua")
 include("concommands.lua")
 include("player/sh_player.lua")
 include("player/sv_player.lua")
-
--- function GM:PlayerSpawn(player)
---     player:SetGravity(0.5)
---     player:SetRunSpeed(1500)
---     player:SetWalkSpeed(150)
---     player:SetupHands()
--- end
+include("shop/sh_shop.lua")
 
 function GM:PlayerInitialSpawn(player)
     if (player:GetPData("playerLvl") == nil) then
@@ -86,12 +81,7 @@ function GM:PlayerDisconnected(player)
 end
 
 function GM:PlayerLoadout(player)
-    player:Give("weapon_pistol")
-    player:GiveAmmo(69, "Pistol", true)
-
-    if (player:GetNWString("playerWeapon") != nil) then
-        player:Give(player:GetNWString("playerWeapon"))
-    end
+    player:Give("gmod_tool")
 
     return true
 end

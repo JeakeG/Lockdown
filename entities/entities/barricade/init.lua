@@ -18,21 +18,6 @@ function ENT:Initialize()
     self:SetHealth(self.BaseHealth)
 end
 
-function ENT:SpawnFunction(player, tr, ClassName)
-    if (!tr.Hit) then return end
-
-    local spawnPos = player:GetShootPos() + player:GetForward() * 80
-
-    self.Owner = player
-
-    local ent = ents.Create(ClassName)
-    ent:SetPos(spawnPos)
-    ent:Spawn()
-    ent:Activate()
-
-    return ent
-end
-
 function ENT:Think()
 
 end
@@ -42,17 +27,5 @@ function ENT:OnTakeDamage(damage)
 
     if (self:Health() <= 0) then
         self:Remove()
-    end
-end
-
-function ENT:OnRemove()
-    local Owner = self.Owner
-    local ClassName = self:GetClass()
-    local entCount = Owner:GetNWInt(ClassName .. "count")
-
-    if (Owner:IsValid()) then
-        if (Owner:GetNWInt(ClassName .. "count") > 0) then
-            Owner:SetNWInt(ClassName .. "count", entCount - 1)
-        end
     end
 end

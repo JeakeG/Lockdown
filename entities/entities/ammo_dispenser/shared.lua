@@ -12,5 +12,5 @@ ENT.PrintName = "Ammo Dispenser"
 ENT.Author = "Jeake"
 ENT.Purpose = "Give Ammo"
 ENT.Instructions = "Place and Use"
-ENT.Spawnable = true
+ENT.Spawnable = false
 ENT.AdminSpawnable = false
