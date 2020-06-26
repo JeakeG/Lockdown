@@ -2,6 +2,7 @@ AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("hud.lua")
 AddCSLuaFile("custom_menu.lua")
+AddCSLuaFile("custom_scoreboard.lua")
 
 include("shared.lua")
 include("concommands.lua")
@@ -50,6 +51,9 @@ function GM:PlayerDeath(victim, inflictor, attacker)
     attacker:SetNWInt("playerMoney", attacker:GetNWInt("playerMoney") + 100)
 
     attacker:SetNWInt("playerExp", attacker:GetNWInt("playerExp") + 75)
+
+    attacker:SetFrags(attacker:Frags() + 1)
+
     checkForLevel(attacker)
 end
 
