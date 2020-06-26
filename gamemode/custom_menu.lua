@@ -126,7 +126,7 @@ function addButtons(Menu)
         end
 
         local weaponsArr = {}
-        weaponsArr[1] = {"models/weapons/w_pist_deagle.mdl", "arccw_welrod", "Default Pistol", 125}
+        weaponsArr[1] = {"models/weapons/w_smg1.mdl", "weapon_smg1", "Default SMG", 125}
 
         for k, v in pairs(weaponsArr) do
             local icon = vgui.Create("SpawnIcon", weaponList)

@@ -9,8 +9,6 @@ function ENT:Initialize()
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
 
-    self:SetUseType(SIMPLE_USE)
-
     local phys = self:GetPhysicsObject()
 
     if (IsValid(phys)) then
@@ -23,34 +21,20 @@ end
 function ENT:SpawnFunction(player, tr, ClassName)
     if (!tr.Hit) then return end
 
-    local entCount = player:GetNWInt(ClassName .. "count")
+    local spawnPos = player:GetShootPos() + player:GetForward() * 80
 
-    if (entCount < self.Limit) then
-        local spawnPos = player:GetShootPos() + player:GetForward() * 80
+    self.Owner = player
 
-        self.Owner = player
+    local ent = ents.Create(ClassName)
+    ent:SetPos(spawnPos)
+    ent:Spawn()
+    ent:Activate()
 
-        local ent = ents.Create(ClassName)
-        ent:SetPos(spawnPos)
-        ent:Spawn()
-        ent:Activate()
-
-        player:SetNWInt(ClassName .. "count", entCount + 1)
-
-        return ent
-    end
-
-    return
-end
-
-function ENT:Use(activator, caller)
-    local ammoType = activator:GetActiveWeapon():GetPrimaryAmmoType()
-
-    activator:GiveAmmo(5, ammoType, false)
+    return ent
 end
 
 function ENT:Think()
-    --Called every tick
+
 end
 
 function ENT:OnTakeDamage(damage)
