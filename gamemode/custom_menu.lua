@@ -47,6 +47,29 @@ function addButtons(Menu)
     end
     playerButton.DoClick = function(playerButton)
         local playerPanel = Menu:Add("Player Panel")
+
+        playerPanel.Paint = function()
+            surface.SetDrawColor(50, 50, 50, 255)
+            surface.DrawRect(0, 0, playerPanel:GetWide(), playerPanel:GetTall())
+            surface.SetTextColor(255, 255, 255, 255)
+
+            --Player Name
+            surface.CreateFont("HeaderFont", {font="Default", size=30, weight=5000})
+            surface.SetFont("HeaderFont")
+            surface.SetTextPos(5, 0)
+            surface.DrawText(LocalPlayer():GetName())
+
+            --Player Exp and Level
+            local expToLevel = (LocalPlayer():GetNWInt("playerLvl") * 100) * 2
+            surface.SetFont("Default")
+            surface.SetTextPos(8, 35)
+            surface.DrawText("Level: " .. LocalPlayer():GetNWInt("playerLvl"))
+            surface.DrawText("\tExp: " .. LocalPlayer():GetNWInt("playerExp") .. "/" .. expToLevel)
+
+            --Player Balance
+            surface.SetTextPos(8, 55)
+            surface.DrawText("Balance: $" .. LocalPlayer():GetNWInt("playerMoney"))
+        end
     end
 
     local shopButton = vgui.Create("DButton")
