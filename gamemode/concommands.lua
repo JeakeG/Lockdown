@@ -31,3 +31,17 @@ function buyEntity(player, cmd, args)
     end
 end
 concommand.Add("buy_entity", buyEntity)
+
+function buyGun(player, cmd, args)
+    if (args[1] != nul && args[2] != nil) then
+        local balance = tonumber(player:GetNWInt("playerMoney"))
+        local gunCost = tonumber(args[2])
+
+        if (balance >= gunCost) then
+            player:SetNWInt("playerMoney", balance - gunCost)
+            player:Give(args[1])
+            player:GiveAmmo(20, player:GetWeapon(args[1]):GetPrimaryAmmoType(), false)
+        end
+    end
+end
+concommand.Add("buy_gun", buyGun)
