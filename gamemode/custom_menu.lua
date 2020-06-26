@@ -124,6 +124,19 @@ function addButtons(Menu)
                 LocalPlayer():ConCommand("buy_entity " .. v["ClassName"])
             end
         end
+
+        local weaponsArr = {}
+        weaponsArr[1] = {"models/weapons/w_pist_deagle.mdl", "arccw_welrod", "Default Pistol", 125}
+
+        for k, v in pairs(weaponsArr) do
+            local icon = vgui.Create("SpawnIcon", weaponList)
+            icon:SetModel(v[1])
+            icon:SetToolTip(v[3] .. "\nCost: " .. "$" .. v[4])
+            weaponList:Add(icon)
+            icon.DoClick = function(icon)
+                LocalPlayer():ConCommand("buy_gun " .. v[2] .. " " .. v[4])
+            end
+        end
     end
 end
 

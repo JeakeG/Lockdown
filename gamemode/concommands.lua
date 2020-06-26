@@ -34,7 +34,7 @@ concommand.Add("buy_entity", buyEntity)
 
 function buyGun(player, cmd, args)
     if (args[1] != nul && args[2] != nil) then
-        local balance = tonumber(player:GetNWInt("playerMoney"))
+        local balance = player:GetNWInt("playerMoney")
         local gunCost = tonumber(args[2])
 
         if (balance >= gunCost) then
