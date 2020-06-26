@@ -45,6 +45,7 @@ function buyGun(player, cmd, args)
 
             if (balance >= gunCost && playerLvl >= levelReq) then
                 player:SetNWInt("playerMoney", balance - gunCost)
+                player:SetNWString("playerWeapon", args[1])
                 player:Give(args[1])
                 player:GiveAmmo(20, player:GetWeapon(args[1]):GetPrimaryAmmoType(), false)
             end

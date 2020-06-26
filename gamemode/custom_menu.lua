@@ -1,7 +1,7 @@
 local Menu
 
-net.Receive("FMenu", function()
-if (Menu == nil) then
+function gameMenu()
+    if (Menu == nil) then
         Menu = vgui.Create("DFrame")
         Menu:SetSize(750, 500)
         Menu:Center()
@@ -16,18 +16,20 @@ if (Menu == nil) then
             surface.SetDrawColor(40, 40, 40, 255)
             surface.DrawRect(0, 24, Menu:GetWide(), 1)
         end
-    end
 
     addButtons(Menu)
-
-    if (net.ReadBit() == 0) then 
-        Menu:Hide()
-        gui.EnableScreenClicker(false)
+    gui.EnableScreenClicker(true)
     else
-        Menu:Show()
-        gui.EnableScreenClicker(true)
+        if (Menu:IsVisible()) then
+            Menu:SetVisible(false)
+            gui.EnableScreenClicker(false)
+        else
+            Menu:SetVisible(true)
+            gui.EnableScreenClicker(true)
+        end
     end
-end)
+end
+concommand.Add("open_game_menu", gameMenu)
 
 function addButtons(Menu) 
     local playerButton = vgui.Create("DButton")

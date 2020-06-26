@@ -33,6 +33,10 @@ function GM:PlayerInitialSpawn(player)
     else
         player:SetNWInt("playerMoney", tonumber(player:GetPData("playerMoney")))
     end
+
+    if (player:GetPData("playerWeapon") != nil) then
+        player:SetNWString("playerWeapon", player:GetPData("playerWeapon"))
+    end
 end
 
 function GM:OnNPCKilled(npc, attacker, inflictor)
@@ -61,30 +65,24 @@ function checkForLevel(player)
     end
 end
 
-util.AddNetworkString("FMenu")
 function GM:ShowSpare2(player)
-    if (open == false) then
-        open = true
-    else
-        open = false
-    end
-    net.Start("FMenu")
-        net.WriteBit(open)
-    net.Broadcast()
+    player:ConCommand("open_game_menu")
 end
 
 function GM:PlayerDisconnected(player)
     player:SetPData("playerLvl", player:GetNWInt("playerLvl"))
     player:SetPData("playerExp", player:GetNWInt("playerExp"))
     player:SetPData("playerMoney", player:GetNWInt("playerMoney"))
+    player:SetPData("playerWeapon", player:GetNWString("playerWeapon"))
 end
 
 function GM:PlayerLoadout(player)
     player:Give("weapon_pistol")
-    player:Give("weapon_physgun")
-    player:Give("weapon_physcannon")
+    player:GiveAmmo(69, "Pistol", true)
 
-    player:GiveAmmo(9999, "Pistol", true)
+    if (player:GetNWString("playerWeapon") != nil) then
+        player:Give(player:GetNWString("playerWeapon"))
+    end
 
     return true
 end
@@ -94,5 +92,6 @@ function GM:ShutDown()
         v:SetPData("playerLvl", v:GetNWInt("playerLvl"))
         v:SetPData("playerExp", v:GetNWInt("playerExp"))
         v:SetPData("playerMoney", v:GetNWInt("playerMoney"))
+        v:SetPData("playerWeapon", v:GetNWString("playerWeapon"))
     end
 end
