@@ -126,15 +126,15 @@ function addButtons(Menu)
         end
 
         local weaponsArr = {}
-        weaponsArr[1] = {"models/weapons/w_smg1.mdl", "weapon_smg1", "Default SMG", 125}
+        weaponsArr[1] = {"models/weapons/w_smg1.mdl", "weapon_smg1", "Default SMG", 125, 5}
 
         for k, v in pairs(weaponsArr) do
             local icon = vgui.Create("SpawnIcon", weaponList)
             icon:SetModel(v[1])
-            icon:SetToolTip(v[3] .. "\nCost: " .. "$" .. v[4])
+            icon:SetToolTip(v[3] .. "\nCost: " .. "$" .. v[4] .. "\nLevel Req: " .. v[5])
             weaponList:Add(icon)
             icon.DoClick = function(icon)
-                LocalPlayer():ConCommand("buy_gun " .. v[2] .. " " .. v[4])
+                LocalPlayer():ConCommand("buy_gun " .. v[2])
             end
         end
     end
