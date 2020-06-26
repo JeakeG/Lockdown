@@ -11,21 +11,26 @@ function buyEntity(player, cmd, args)
 
             local entCount = player:GetNWInt(ClassName .. "count")
 
-            if (entCount < ent.Limit && balance >= ent.Cost) then
-                local spawnPos = player:GetShootPos() + player:GetForward() * 80
+            if(entCount < ent.Limit) then
+                if (balance >= ent.Cost) then
+                    local spawnPos = player:GetShootPos() + player:GetForward() * 80
 
-                ent.Owner = player
+                    ent.Owner = player
 
-                ent:SetPos(spawnPos)
-                ent:Spawn()
-                ent:Activate()
+                    ent:SetPos(spawnPos)
+                    ent:Spawn()
+                    ent:Activate()
 
-                player:SetNWInt(ClassName .. "count", entCount + 1)
-                player:SetNWInt("playerMoney", balance - ent.Cost)
+                    player:SetNWInt(ClassName .. "count", entCount + 1)
+                    player:SetNWInt("playerMoney", balance - ent.Cost)
 
-                return ent
+                    return ent
+                else
+                    player:PrintMessage(HUD_PRINTTALK, "You do not have enough money to purchase this.")
+                end
+            else
+                player:PrintMessage(HUD_PRINTTALK, "Maximum amount of this entity has been reached. MAX = " .. ent.Limit)
             end
-
             return
         end
     end
@@ -43,11 +48,17 @@ function buyGun(player, cmd, args)
             local gunCost = v[2]
             local levelReq = v[3]
 
-            if (balance >= gunCost && playerLvl >= levelReq) then
-                player:SetNWInt("playerMoney", balance - gunCost)
-                player:SetNWString("playerWeapon", args[1])
-                player:Give(args[1])
-                player:GiveAmmo(20, player:GetWeapon(args[1]):GetPrimaryAmmoType(), false)
+            if (playerLvl >= levelReq) then
+                if (balance >= gunCost) then
+                    player:SetNWInt("playerMoney", balance - gunCost)
+                    player:SetNWString("playerWeapon", args[1])
+                    player:Give(args[1])
+                    player:GiveAmmo(20, player:GetWeapon(args[1]):GetPrimaryAmmoType(), false)
+                else
+                    player:PrintMessage(HUD_PRINTTALK, "You do not have enough money to purchase this.")
+                end
+            else
+                player:PrintMessage(HUD_PRINTTALK, "Level " .. levelReq .. " is required to purchase this.")
             end
             return
         end

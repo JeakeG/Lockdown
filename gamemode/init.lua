@@ -62,6 +62,8 @@ function checkForLevel(player)
         curExp = curExp - expToLevel
         player:SetNWInt("playerExp", curExp)
         player:SetNWInt("playerLvl", curLvl + 1)
+
+        player:PrintMessage(HUD_PRINTTALK, "Congratulations! You have reached level " .. (curLvl + 1) .. ".")
     end
 end
 
