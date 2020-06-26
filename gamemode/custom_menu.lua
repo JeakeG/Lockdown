@@ -89,21 +89,37 @@ function addButtons(Menu)
     end
     shopButton.DoClick = function(shopButton)
         local shopPanel = Menu:Add("Shop Panel")
-        local iconList = vgui.Create("DIconLayout", shopPanel)
 
-        iconList:SetPos(0,0)
-        iconList:SetSize(shopPanel:GetWide(), shopPanel:GetTall())
-        iconList:SetSpaceY(5)
-        iconList:SetSpaceX(5)
+        local entityCategory = vgui.Create("DCollapsibleCategory", shopPanel)
+        entityCategory:SetPos(0, 0)
+        entityCategory:SetSize(shopPanel:GetWide(), 100)
+        entityCategory:SetLabel("Entities")
+
+        local weaponCategory = vgui.Create("DCollapsibleCategory", shopPanel)
+        weaponCategory:SetPos(0, 100)
+        weaponCategory:SetSize(shopPanel:GetWide(), 100)
+        weaponCategory:SetLabel("Weapons")
+
+        local entityList = vgui.Create("DIconLayout", entityCategory)
+        entityList:SetPos(0,20)
+        entityList:SetSize(entityCategory:GetWide(), entityCategory:GetTall())
+        entityList:SetSpaceY(5)
+        entityList:SetSpaceX(5)
+
+        local weaponList = vgui.Create("DIconLayout", weaponCategory)
+        weaponList:SetPos(0,20)
+        weaponList:SetSize(weaponCategory:GetWide(), weaponCategory:GetTall())
+        weaponList:SetSpaceY(5)
+        weaponList:SetSpaceX(5)
         
         local entsArr = {}
         entsArr[1] = scripted_ents.Get("ammo_dispenser")
 
         for k, v in pairs(entsArr) do
-            local icon = vgui.Create("SpawnIcon", iconList)
+            local icon = vgui.Create("SpawnIcon", entityList)
             icon:SetModel(v["Model"])
             icon:SetToolTip(v["PrintName"] .. "\nCost: " .. "$" .. v["Cost"])
-            iconList:Add(icon)
+            entityList:Add(icon)
             icon.DoClick = function(icon)
                 LocalPlayer():ConCommand("buy_entity " .. v["ClassName"])
             end
