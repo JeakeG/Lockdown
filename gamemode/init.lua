@@ -3,11 +3,12 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("hud.lua")
 AddCSLuaFile("custom_menu.lua")
 AddCSLuaFile("custom_scoreboard.lua")
+AddCSLuaFile("player/sh_player.lua")
 
 include("shared.lua")
 include("concommands.lua")
-
-local open = false
+include("player/sh_player.lua")
+include("player/sv_player.lua")
 
 -- function GM:PlayerSpawn(player)
 --     player:SetGravity(0.5)
@@ -48,13 +49,15 @@ function GM:OnNPCKilled(npc, attacker, inflictor)
 end
 
 function GM:PlayerDeath(victim, inflictor, attacker)
-    attacker:SetNWInt("playerMoney", attacker:GetNWInt("playerMoney") + 100)
+    if(IsValid(attacker) and attacker:IsPlayer()) then
+        attacker:SetNWInt("playerMoney", attacker:GetNWInt("playerMoney") + 100)
 
-    attacker:SetNWInt("playerExp", attacker:GetNWInt("playerExp") + 75)
+        attacker:SetNWInt("playerExp", attacker:GetNWInt("playerExp") + 75)
 
-    attacker:SetFrags(attacker:Frags() + 1)
+        attacker:SetFrags(attacker:Frags() + 1)
 
-    checkForLevel(attacker)
+        checkForLevel(attacker)
+    end
 end
 
 function checkForLevel(player)

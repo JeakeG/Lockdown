@@ -62,15 +62,15 @@ function addButtons(Menu)
             surface.DrawText(LocalPlayer():GetName())
 
             --Player Exp and Level
-            local expToLevel = (LocalPlayer():GetNWInt("playerLvl") * 100) * 2
+            local expToLevel = (LocalPlayer():GetLevel() * 100) * 2
             surface.SetFont("Default")
             surface.SetTextPos(8, 35)
-            surface.DrawText("Level: " .. LocalPlayer():GetNWInt("playerLvl"))
-            surface.DrawText("\tExp: " .. LocalPlayer():GetNWInt("playerExp") .. "/" .. expToLevel)
+            surface.DrawText("Level: " .. LocalPlayer():GetLevel())
+            surface.DrawText("\tExp: " .. LocalPlayer():GetExp() .. "/" .. expToLevel)
 
             --Player Balance
             surface.SetTextPos(8, 55)
-            surface.DrawText("Balance: $" .. LocalPlayer():GetNWInt("playerMoney"))
+            surface.DrawText("Balance: $" .. LocalPlayer():GetBalance())
         end
     end
 
@@ -116,6 +116,7 @@ function addButtons(Menu)
         
         local entsArr = {}
         entsArr[1] = scripted_ents.Get("ammo_dispenser")
+        entsArr[2] = scripted_ents.Get("barricade")
 
         for k, v in pairs(entsArr) do
             local icon = vgui.Create("SpawnIcon", entityList)
