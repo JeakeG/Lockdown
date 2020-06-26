@@ -8,16 +8,12 @@ include("concommands.lua")
 
 local open = false
 
-function GM:PlayerSpawn(player)
-    player:SetGravity(0.5)
-    player:SetMaxHealth(100)
-    player:SetHealth(100)
-    player:SetRunSpeed(1500)
-    player:SetWalkSpeed(150)
-    player:Give("weapon_physgun")
-    player:Give("weapon_physcannon")
-    player:SetupHands()
-end
+-- function GM:PlayerSpawn(player)
+--     player:SetGravity(0.5)
+--     player:SetRunSpeed(1500)
+--     player:SetWalkSpeed(150)
+--     player:SetupHands()
+-- end
 
 function GM:PlayerInitialSpawn(player)
     if (player:GetPData("playerLvl") == nil) then
@@ -81,6 +77,16 @@ function GM:PlayerDisconnected(player)
     player:SetPData("playerLvl", player:GetNWInt("playerLvl"))
     player:SetPData("playerExp", player:GetNWInt("playerExp"))
     player:SetPData("playerMoney", player:GetNWInt("playerMoney"))
+end
+
+function GM:PlayerLoadout(player)
+    player:Give("weapon_pistol")
+    player:Give("weapon_physgun")
+    player:Give("weapon_physcannon")
+
+    player:GiveAmmo(9999, "Pistol", true)
+
+    return true
 end
 
 function GM:ShutDown()
