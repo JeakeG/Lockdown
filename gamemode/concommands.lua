@@ -5,6 +5,7 @@ function handleLimitChange(ent, itemName, player)
         player:SetVar("amount_" .. itemName, player:GetVar("amount_" .. itemName) - 1)
     end)
 end
+
 local function buyItem(player, _, args)
     local categoryName = args[1]
     local itemName = args[2]
@@ -30,7 +31,7 @@ local function buyItem(player, _, args)
 
     if isGun then
         player:Give(className)
-        player:GiveAmmo(25, player:GetWeapon(classname):GetPrimaryAmmoType(), false)
+        player:GiveAmmo(25, player:GetWeapon(tostring(className)):GetPrimaryAmmoType(), false)
     else
         if limit then
             local playerCurentSpawnAmount = player:GetVar("amount_" .. itemName, 0)
@@ -68,3 +69,9 @@ local function buyItem(player, _, args)
     player:RemoveFromBalance(price)
 end
 concommand.Add("buy_item", buyItem)
+
+concommand.Add("add_money", function(player, command, args)
+    if (player:IsAdmin()) then
+        player:AddToBalance(args[1])
+    end
+end)

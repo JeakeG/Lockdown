@@ -3,6 +3,6 @@ GM.Author = "Jeake"
 GM.Email = "N/A"
 GM.Website = "N/A"
 
-DeriveGamemode("sandbox")
+--DeriveGamemode("sandbox")
 
 LOCKDOWN = {}
