@@ -1,10 +1,8 @@
-function handleLimitChange(ent, itemName, player)
-    player:SetVar("amount_" .. itemName, player:GetVar("amount_" .. itemName, 0) + 1)
+--[[
+    Last Modified By: Jeake
+    Last Modified On: 6/30/20
 
-    ent:CallOnRemove("DecrementLimit", function()
-        player:SetVar("amount_" .. itemName, player:GetVar("amount_" .. itemName) - 1)
-    end)
-end
+]]--
 
 local function buyItem(player, _, args)
     local categoryName = args[1]
@@ -70,8 +68,59 @@ local function buyItem(player, _, args)
 end
 concommand.Add("buy_item", buyItem)
 
-concommand.Add("add_money", function(player, command, args)
+//Console Command to add money to a player's account
+function AddPlayerMoney (player, command, args)
     if (player:IsAdmin()) then
-        player:AddToBalance(args[1])
+        if(tonumber(args[1]) != nil) then
+            player:AddToBalance(args[1])
+        else
+        print("not a number")
+        end
+    else
+        print("you are not an admin")
     end
-end)
+end
+concommand.Add("add_money", AddPlayerMoney)
+
+//Console Command to set money in a player's account
+function SetPlayerMoney (player, command, args)
+    if (player:IsAdmin()) then
+        if(tonumber(args[1]) != nil) then
+            player:SetBalance(args[1])
+        else
+            print("not a number")
+        end
+    else
+        print("you are not an admin")
+    end
+end
+concommand.Add("set_money", SetPlayerMoney)
+
+//Function to get a player from a player id
+function GetPlayerByID(steamID)
+    //Returns if the client calls the command
+    if CLIENT then return nil end
+
+    //Loops through all players in server
+    for k, v in pairs(player.GetAll()) do
+        //Returns a player is the steamID of the player matches the given ID
+        if (v:SteamID() == steamID) then
+            return v
+        end
+    end
+
+    //If no player is found, returns nil
+    return nil
+end
+
+//Test function
+local function TestConCommandFunc(player, command, args)
+    local playerSteamID = player:SteamID()
+
+    local playerByID = GetPlayerByID(playerSteamID)
+
+    local playerNameByID = playerByID:GetName()
+
+    print(playerNameByID)
+end
+concommand.Add("ld_test", TestConCommandFunc)

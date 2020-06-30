@@ -1,5 +1,13 @@
+local lasNum = 0
+
 function HUD()
     local client = LocalPlayer()
+    local playerBalance = client:GetBalance()    
+
+    if (lastNum != playerBalance) then
+        print(playerBalance)
+        lastNum = playerBalance
+    end
 
     if !client:Alive() then 
         return
@@ -44,7 +52,7 @@ function HUD()
     draw.SimpleText("EXP: " .. client:GetNWInt("playerExp") .. "/" .. expToLevel, "DermaDefaultBold", 10, ScrH() - 125, Color(255, 255, 255, 255), 0, 0)
 
     draw.RoundedBox(0, 255, ScrH() - 100, 125, 25, Color(30, 30, 30, 230))
-    draw.SimpleText("$ " .. client:GetNWInt("playerMoney"), "DermaDefaultBold", 260, ScrH() - 95, Color(255, 255, 255, 255), 0, 0)
+    draw.SimpleText("$ " .. playerBalance, "DermaDefaultBold", 260, ScrH() - 95, Color(255, 255, 255, 255), 0, 0)
 
     draw.RoundedBox(0, 385, ScrH() - 10, ScrW() - 390, 5, Color(30, 30, 30, 230))
     draw.RoundedBox(0, 385, ScrH() - 10, (client:GetNWInt("playerExp") / expToLevel) * (ScrW() - 390), 5, Color(50, 200, 10, 255))

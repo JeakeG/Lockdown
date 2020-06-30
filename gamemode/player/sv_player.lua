@@ -2,8 +2,9 @@ local meta = FindMetaTable("Player")
 
 function meta:AddToBalance(amount)
     local curBalance = self:GetBalance()
-
+    print("Before: " .. self:GetBalance())
     self:SetBalance(curBalance + amount)
+    print("After: " .. self:GetBalance())
 end
 
 function meta:RemoveFromBalance(amount)

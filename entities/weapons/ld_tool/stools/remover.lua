@@ -23,11 +23,6 @@ local function DoRemoveEntity( ent )
 	-- Nothing for the client to do here
 	if ( CLIENT ) then return true end
 
-	print(ent:GetClass())
-
-	-- Remove all constraints (this stops ropes from hanging around)
-	constraint.RemoveAll( ent )
-
 	-- Remove it properly in 1 second
 	timer.Simple( 1, function() if ( IsValid( ent ) ) then ent:Remove() end end )
 
@@ -62,36 +57,6 @@ function TOOL:LeftClick( trace )
 	end
 
 	return false
-
-end
-
---
--- Remove this entity and everything constrained
---
-function TOOL:RightClick( trace )
-
-	local Entity = trace.Entity
-
-	if ( !IsValid( Entity ) || Entity:IsPlayer() ) then return false end
-
-	-- Client can bail out now.
-	if ( CLIENT ) then return true end
-
-	local ConstrainedEntities = constraint.GetAllConstrainedEntities( trace.Entity )
-	local Count = 0
-
-	-- Loop through all the entities in the system
-	for _, Entity in pairs( ConstrainedEntities ) do
-
-		if ( DoRemoveEntity( Entity ) ) then
-			Count = Count + 1
-		end
-
-	end
-
-	self:GetOwner():SendLua( string.format( "for i=1,%i do achievements.Remover() end", Count ) )
-
-	return true
 
 end
 

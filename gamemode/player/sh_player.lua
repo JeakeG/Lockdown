@@ -13,7 +13,7 @@ function meta:GetExp()
 end
 
 function meta:CanAfford(cost)
-    if (self:GetBalance() >= cost) then
+    if (tonumber(self:GetBalance()) >= tonumber(cost)) then
         return true
     end
 
