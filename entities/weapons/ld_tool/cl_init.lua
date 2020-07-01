@@ -1,6 +1,6 @@
 --[[
 	Last Modified By: Jeake
-	Last Modified On: 6/30/20
+	Last Modified On: 7/1/20
 ]]--
 
 local gmod_drawhelp = CreateClientConVar( "gmod_drawhelp", "1", true, false, "Should the tool HUD be displayed when the tool gun is active?" )
@@ -74,26 +74,26 @@ ply = LocalPlayer()
 function SWEP:DrawHUD()
 	if(shouldDrawHUD) then
 		surface.SetDrawColor(15, 15, 15, 225)
-		DrawCircle(ScrW() / 2, ScrH() / 2, 125, 256)
-		surface.SetDrawColor(255, 255, 255, 255)
-		DrawCircle(ScrW() / 2, ScrH() / 2, 50, 256)
+		DrawCircle(ScrW() / 2, ScrH() / 2, 125, 60, 1000)
+		--TestCircle(ScrW() / 2, ScrH() / 2, 250, 150, 256)
 		gui.EnableScreenClicker(true)
 	else
 		gui.EnableScreenClicker(false)
 	end
 end
 
-function DrawCircle( x, y, radius, seg )
-	local cir = {}
-
-	table.insert( cir, { x = x, y = y, u = 0.5, v = 0.5 } )
-	for i = 0, seg do
-		local a = math.rad( ( i / seg ) * -360 )
-		table.insert( cir, { x = x + math.sin( a ) * radius, y = y + math.cos( a ) * radius, u = math.sin( a ) / 2 + 0.5, v = math.cos( a ) / 2 + 0.5 } )
+//Function used to draw the tool menu circle background on screen
+function DrawCircle( x, y, oRad, iRad, seg )
+	
+	local halfSeg = seg / 4
+	for i = 0, halfSeg - 1 do
+		local cir = {}
+		local ang = math.rad( ( i / (halfSeg) ) * -360 )
+		local nextAng = math.rad( ( (i + 1) / (halfSeg) ) * -360 )
+		table.insert( cir, { x = x + math.sin(ang) * oRad, y = y + math.cos(ang) * oRad} )
+		table.insert( cir, { x = x + math.sin(nextAng) * oRad, y = y + math.cos(nextAng) * oRad} )
+		table.insert( cir, { x = x + math.sin(nextAng) * iRad, y = y + math.cos(nextAng) * iRad} )
+		table.insert( cir, { x = x + math.sin(ang) * iRad, y = y + math.cos(ang) * iRad} )
+		surface.DrawPoly(cir)
 	end
-
-	local a = math.rad( 0 ) -- This is needed for non absolute segment counts
-	table.insert( cir, { x = x + math.sin( a ) * radius, y = y + math.cos( a ) * radius, u = math.sin( a ) / 2 + 0.5, v = math.cos( a ) / 2 + 0.5 } )
-
-	surface.DrawPoly( cir )
 end
