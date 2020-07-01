@@ -17,28 +17,28 @@ include("player/sh_player.lua")
 include("player/sv_player.lua")
 include("shop/sh_shop.lua")
 
-//This function is run when the player spawns on the server for the first time
-function GM:PlayerInitialSpawn(player)
-    if (player:GetPData("playerLvl") == nil) then
-        player:SetNWInt("playerLvl", 1)
+//This function is run when the ply spawns on the server for the first time
+function GM:PlayerInitialSpawn(ply)
+    if (ply:GetPData("playerLvl") == nil) then
+        ply:SetNWInt("playerLvl", 1)
     else
-        player:SetNWInt("playerLvl", tonumber(player:GetPData("playerLvl")))
+        ply:SetNWInt("playerLvl", tonumber(ply:GetPData("playerLvl")))
     end
 
-    if (player:GetPData("playerExp") == nil) then
-        player:SetNWInt("playerExp", 0)
+    if (ply:GetPData("playerExp") == nil) then
+        ply:SetNWInt("playerExp", 0)
     else
-        player:SetNWInt("playerExp", tonumber(player:GetPData("playerExp")))
+        ply:SetNWInt("playerExp", tonumber(ply:GetPData("playerExp")))
     end
 
-    if (player:GetPData("playerMoney") == nil) then
-        player:SetNWInt("playerMoney", 0)
+    if (ply:GetPData("playerMoney") == nil) then
+        ply:SetNWInt("playerMoney", 0)
     else
-        player:SetNWInt("playerMoney", tonumber(player:GetPData("playerMoney")))
+        ply:SetNWInt("playerMoney", tonumber(ply:GetPData("playerMoney")))
     end
 
-    if (player:GetPData("playerWeapon") != nil) then
-        player:SetNWString("playerWeapon", player:GetPData("playerWeapon"))
+    if (ply:GetPData("playerWeapon") != nil) then
+        ply:SetNWString("playerWeapon", ply:GetPData("playerWeapon"))
     end
 end
 
@@ -50,7 +50,7 @@ function GM:OnNPCKilled(npc, attacker, inflictor)
     checkForLevel(attacker)
 end
 
-//This function is run when a player is killed
+//This function is run when a ply is killed
 function GM:PlayerDeath(victim, inflictor, attacker)
     if(IsValid(attacker) and attacker:IsPlayer()) then
         if (victim == attacker) then
@@ -64,45 +64,45 @@ function GM:PlayerDeath(victim, inflictor, attacker)
     end
 end
 
-//This function checks to see if the player should level up based on their experience
-function checkForLevel(player)
-    local expToLevel = (player:GetNWInt("playerLvl") * 100) * 2
-    local curExp = player:GetNWInt("playerExp")
-    local curLvl = player:GetNWInt("playerLvl")
+//This function checks to see if the ply should level up based on their experience
+function checkForLevel(ply)
+    local expToLevel = (ply:GetNWInt("playerLvl") * 100) * 2
+    local curExp = ply:GetNWInt("playerExp")
+    local curLvl = ply:GetNWInt("playerLvl")
 
     if(curExp >= expToLevel) then
         curExp = curExp - expToLevel
-        player:SetNWInt("playerExp", curExp)
-        player:SetNWInt("playerLvl", curLvl + 1)
+        ply:SetNWInt("playerExp", curExp)
+        ply:SetNWInt("playerLvl", curLvl + 1)
 
-        player:PrintMessage(HUD_PRINTTALK, "Congratulations! You have reached level " .. (curLvl + 1) .. ".")
+        ply:PrintMessage(HUD_PRINTTALK, "Congratulations! You have reached level " .. (curLvl + 1) .. ".")
     end
 end
 
 //This function is run with "F4" is pressed
-function GM:ShowSpare2(player)
-    player:ConCommand("open_game_menu")
+function GM:ShowSpare2(ply)
+    ply:ConCommand("open_game_menu")
 end
 
-//This function is run when a player disconnects from the server
-function GM:PlayerDisconnected(player)
-    player:SetPData("playerLvl", player:GetNWInt("playerLvl"))
-    player:SetPData("playerExp", player:GetNWInt("playerExp"))
-    player:SetPData("playerMoney", player:GetNWInt("playerMoney"))
-    player:SetPData("playerWeapon", player:GetNWString("playerWeapon"))
+//This function is run when a ply disconnects from the server
+function GM:PlayerDisconnected(ply)
+    ply:SetPData("playerLvl", ply:GetNWInt("playerLvl"))
+    ply:SetPData("playerExp", ply:GetNWInt("playerExp"))
+    ply:SetPData("playerMoney", ply:GetNWInt("playerMoney"))
+    ply:SetPData("playerWeapon", ply:GetNWString("playerWeapon"))
 end
 
-//This function is run when giving the player their loadout when spawning
-function GM:PlayerLoadout(player)
-    player:Give("ld_tool")
+//This function is run when giving the ply their loadout when spawning
+function GM:PlayerLoadout(ply)
+    ply:Give("ld_tool")
 
     return true
 end
 
 local fallDamageMode = 1
 
-//This function is run when a player takes fall damage
-function GM:GetFallDamage(player, speed)
+//This function is run when a ply takes fall damage
+function GM:GetFallDamage(ply, speed)
     if (fallDamageMode == 0) then
         //This is for "realistic" fall damage
         return (speed / 8)
@@ -117,7 +117,7 @@ end
 
 //This function is run when the server is shutting down
 function GM:ShutDown()
-    for k, v in pairs(player.GetAll()) do
+    for k, v in pairs(ply.GetAll()) do
         v:SetPData("playerLvl", v:GetNWInt("playerLvl"))
         v:SetPData("playerExp", v:GetNWInt("playerExp"))
         v:SetPData("playerMoney", v:GetNWInt("playerMoney"))

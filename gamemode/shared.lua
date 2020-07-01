@@ -8,7 +8,7 @@ GM.Website = "N/A"
 LOCKDOWN = {}
 
 //This function is called to determine whether or not the tool gun can be used
-function GM:CanTool(player, trace, mode)
+function GM:CanTool(ply, trace, mode)
 
     //This is a list of the current stools in this gamemode
     toolModes = {"remover"}

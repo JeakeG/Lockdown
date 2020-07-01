@@ -1,5 +1,10 @@
+--[[
+    Last Modified By: Jeake
+    Last Modified On: 6/30/20
+]]--
+
 local ScoreboardDerma = nil
-local PlayerList = nil
+local plyList = nil
 
 function GM:ScoreboardShow()
     if (!IsValid(ScoreboardDerma)) then
@@ -13,30 +18,30 @@ function GM:ScoreboardShow()
             draw.RoundedBox(5, 0, 0, ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall(), Color(60, 60, 60, 255))
         end
 
-        local PlayerScrollPanel = vgui.Create("DScrollPanel", ScoreboardDerma)
-        PlayerScrollPanel:SetSize(ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall() - 20)
-        PlayerScrollPanel:SetPos(0, 20)
+        local plyScrollPanel = vgui.Create("DScrollPanel", ScoreboardDerma)
+        plyScrollPanel:SetSize(ScoreboardDerma:GetWide(), ScoreboardDerma:GetTall() - 20)
+        plyScrollPanel:SetPos(0, 20)
 
-        PlayerList = vgui.Create("DListLayout", PlayerScrollPanel)
-        PlayerList:SetSize(PlayerScrollPanel:GetWide(), PlayerScrollPanel:GetTall())
-        PlayerList:SetPos(0, 0)
+        plyList = vgui.Create("DListLayout", plyScrollPanel)
+        plyList:SetSize(plyScrollPanel:GetWide(), plyScrollPanel:GetTall())
+        plyList:SetPos(0, 0)
     end
 
     if (IsValid(ScoreboardDerma)) then
-        PlayerList:Clear()
+        plyList:Clear()
 
         for k, v in pairs(player.GetAll()) do
-            local PlayerPanel = vgui.Create("DPanel", PlayerList)
-            PlayerPanel:SetSize(PlayerList:GetWide(), 50)
-            PlayerPanel:SetPos(0, 0)
-            PlayerPanel.Paint = function()
-                draw.RoundedBox(0, 0, 0, PlayerPanel:GetWide(), PlayerPanel:GetTall(), Color(50, 50, 50, 255))
-                draw.RoundedBox(0, 0, 49, PlayerPanel:GetWide(), 1, Color(255, 255, 255, 255))
+            local plyPanel = vgui.Create("DPanel", plyList)
+            plyPanel:SetSize(plyList:GetWide(), 50)
+            plyPanel:SetPos(0, 0)
+            plyPanel.Paint = function()
+                draw.RoundedBox(0, 0, 0, plyPanel:GetWide(), plyPanel:GetTall(), Color(50, 50, 50, 255))
+                draw.RoundedBox(0, 0, 49, plyPanel:GetWide(), 1, Color(255, 255, 255, 255))
 
-                draw.SimpleText(v:GetName() .. " - Level: " .. v:GetNWInt("playerLvl"), "DermaDefaultBold", 20, 10,Color(255,255,255))
-                draw.SimpleText("$ " .. v:GetNWInt("playerMoney"), "DermaDefaultBold", 20, 25, Color(255, 255, 255))
-                draw.SimpleText("Kills: " .. v:Frags(), "DermaDefault", PlayerList:GetWide() - 20, 10, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-                draw.SimpleText("Deaths: " .. v:Deaths(), "DermaDefault", PlayerList:GetWide() - 20, 25, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+                draw.SimpleText(v:GetName() .. " - Level: " .. v:GetNWInt("plyLvl"), "DermaDefaultBold", 20, 10,Color(255,255,255))
+                draw.SimpleText("$ " .. v:GetNWInt("plyMoney"), "DermaDefaultBold", 20, 25, Color(255, 255, 255))
+                draw.SimpleText("Kills: " .. v:Frags(), "DermaDefault", plyList:GetWide() - 20, 10, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+                draw.SimpleText("Deaths: " .. v:Deaths(), "DermaDefault", plyList:GetWide() - 20, 25, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
             end
         end
 

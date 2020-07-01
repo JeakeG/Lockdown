@@ -1,8 +1,8 @@
 local menu
-local player
+local ply
 
 local function openF4Menu()
-    player = LocalPlayer()
+    ply = LocalPlayer()
 
     if (IsValid(menu)) then
         menu:Show()

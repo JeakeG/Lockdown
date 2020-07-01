@@ -51,8 +51,8 @@ end
 -----------------------------------------------------------
 
 //Hooks that are called when keys are pressed and released, will be used to determine when tool hud should show
-local function KeyPress (player, key) 
-	if (IsValid(player)) then return end
+local function KeyPress (ply, key)
+	if (!IsValid(ply)) then return end
 
 	if (key == IN_ATTACK2) then
 		shouldDrawHUD = true
@@ -60,8 +60,8 @@ local function KeyPress (player, key)
 end
 hook.Add("KeyPress", "keypress_show_tool_menu", KeyPress)
 
-local function KeyRelease (player, key)
-	if (IsValid(player)) then return end
+local function KeyRelease (ply, key)
+	if (!IsValid(ply)) then return end
 
 	if (key == IN_ATTACK2) then
 		shouldDrawHUD = false
@@ -69,15 +69,21 @@ local function KeyRelease (player, key)
 end
 hook.Add("KeyRelease", "keyrelease_show_tool_menu", KeyRelease)
 
-player = LocalPlayer()
+//This will draw the radial menu to choose a tool when right click is held down
+ply = LocalPlayer()
 function SWEP:DrawHUD()
-	surface.DrawCircle(ScrW() / 2, ScrH() / 2, 250, 255, 255, 255, 255)
-
-	surface.SetDrawColor(255, 0, 0, 255)
-	Circle(ScrW() / 2, ScrH() / 2, 200, 200)
+	if(shouldDrawHUD) then
+		surface.SetDrawColor(15, 15, 15, 225)
+		DrawCircle(ScrW() / 2, ScrH() / 2, 125, 256)
+		surface.SetDrawColor(255, 255, 255, 255)
+		DrawCircle(ScrW() / 2, ScrH() / 2, 50, 256)
+		gui.EnableScreenClicker(true)
+	else
+		gui.EnableScreenClicker(false)
+	end
 end
 
-function Circle( x, y, radius, seg )
+function DrawCircle( x, y, radius, seg )
 	local cir = {}
 
 	table.insert( cir, { x = x, y = y, u = 0.5, v = 0.5 } )
